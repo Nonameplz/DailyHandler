@@ -46,4 +46,10 @@ declare module '@element-plus/icons-vue' {
 
     export class InfoFilled {
     }
+
+    export class QuestionFilled {
+    }
+}
+
+export class Check {
 }

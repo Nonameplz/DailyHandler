@@ -54,11 +54,6 @@ const onUploadFile = (uploadFile: any) => {
     cropperOption.value.img = URL.createObjectURL(rawFile)
 }
 
-const realTime = (data: any) => {
-    console.log(data)
-    previews.value = data
-}
-
 const open = () => {
     dialogVisible.value = true
 }

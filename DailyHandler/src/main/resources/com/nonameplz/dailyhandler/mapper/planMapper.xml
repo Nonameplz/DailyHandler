@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nonameplz.dailyhandler.mapper.planMapper">
+    <insert id="addSavingProcess">
+        call addSavingProcess(
+                #{userUUID,mode=IN,jdbcType=VARCHAR},
+                #{targetUUID,mode=IN,jdbcType=VARCHAR},
+                #{processUUID,mode=IN,jdbcType=VARCHAR},
+                #{saving,mode=IN,jdbcType=DOUBLE},
+                #{outPut,mode=IN,jdbcType=DOUBLE}
+             )
+    </insert>
+    
+    <update id="modifySavingPlan">
+        call modifySavingPlan(
+                #{targetUUID,mode=IN,jdbcType=VARCHAR},
+                #{targetAmount,mode=IN,jdbcType=DOUBLE},
+                #{target,mode=IN,jdbcType=VARCHAR}
+             )
+    </update>
+
+    <update id="modifySavingProcess">
+        call modifySavingProcess(
+                #{targetUUID,mode=IN,jdbcType=VARCHAR},
+                #{processUUID,mode=IN,jdbcType=VARCHAR},
+                #{saving,mode=IN,jdbcType=DOUBLE},
+                #{outPut,mode=IN,jdbcType=DOUBLE}
+             )
+    </update>
+    <delete id="deleteSavingPlan">
+        call deleteSavingPlan(#{targetUUID,mode=IN,jdbcType=VARCHAR})
+    </delete>
+    <delete id="deleteSavingProcess">
+        call deleteSavingProcess(#{processUUID,mode=IN,jdbcType=VARCHAR})
+    </delete>
+
+</mapper>

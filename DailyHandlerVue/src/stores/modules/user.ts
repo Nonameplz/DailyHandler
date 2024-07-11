@@ -7,6 +7,7 @@ export const useUserStore = defineStore(
     () => {
 
         const user:Ref<any> = ref({})
+        const seeAnnouncement = ref<boolean>(false)
 
         const setUser = (value : any) => {
             user.value = value
@@ -21,11 +22,17 @@ export const useUserStore = defineStore(
             user.value = ref({})
         }
 
+        const setSeeAnnouncement = (value : boolean) => {
+            seeAnnouncement.value = value
+        }
+
         return {
             user,
+            seeAnnouncement,
             setUser,
             getUser,
-            delUser
+            delUser,
+            setSeeAnnouncement,
         }
     },
     {

@@ -16,7 +16,7 @@ app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 app.use(VueReCaptcha, {
-    siteKey: '6LdzFgAqAAAAAGmLrDP9MZybGKyxHJOqj464o9Qq',
+    siteKey: '***',
     loaderOptions: {
         useRecaptchaNet: true,
         autoHideBadge: false

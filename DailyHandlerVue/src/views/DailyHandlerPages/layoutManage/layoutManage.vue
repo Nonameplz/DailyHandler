@@ -172,8 +172,8 @@ const handleCommand = (command: string | number | object) => {
                     </el-main>
                     <el-footer class="footer"
                     >Created by &boxV;
-                        <p class="opacity-15">Nonameplz</p>
-                        &boxV;
+                        <p class="opacity-15">沈鑫海</p>
+                        &boxV;李浩然
                     </el-footer>
                 </el-container>
             </el-container>

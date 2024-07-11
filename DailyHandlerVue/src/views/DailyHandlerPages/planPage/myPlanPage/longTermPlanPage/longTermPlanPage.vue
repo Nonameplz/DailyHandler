@@ -2,8 +2,12 @@
 import DisplayPanel from '@/components/displayPanel.vue'
 import { onMounted, type Ref, ref } from 'vue'
 import PageContainer from '@/components/pageContainer.vue'
-import { deleteLongTermPlanService, getPlanLabelsService, getUserLongTermPlanService } from '@/api/plan'
-import { ArrowLeftBold, Delete, Edit } from '@element-plus/icons-vue'
+import {
+    deleteLongTermPlanService,
+    getPlanLabelsService,
+    getUserLongTermPlanService, longTermPlanDoneService
+} from '@/api/plan'
+import { ArrowLeftBold, Delete, Edit, QuestionFilled, Check } from '@element-plus/icons-vue'
 import { timeParse } from '@/utils/timeParse'
 import LongTermPlanEdit
     from '@/views/DailyHandlerPages/planPage/myPlanPage/longTermPlanPage/compoments/longTermPlanEdit.vue'
@@ -12,6 +16,11 @@ import { ElNotification } from 'element-plus'
 
 const isDisplay: Ref<boolean> = ref(true)
 const longTermPlanList: Ref<any> = ref({})
+const longTermPlanListLess: Ref<Array<{
+    planUUID: string,
+    planTitle: string,
+    planStatus: number
+}>> = ref([])
 const longTermPlanEditRef = ref()
 
 const labelList: Ref<any> = ref()
@@ -19,6 +28,7 @@ const labelList: Ref<any> = ref()
 const getLabels = async () => {
     const res = await getPlanLabelsService()
     labelList.value = res.data
+    labelFilter()
 }
 
 const parseToName = (value: string | string[]) => {
@@ -43,6 +53,14 @@ const changeDisplay = () => {
 const getLongTermPlanList = async () => {
     const res = await getUserLongTermPlanService()
     longTermPlanList.value = res.data
+
+    for (let i = 0; i < longTermPlanList.value.length; i++) {
+        longTermPlanListLess.value.push({
+            planUUID: longTermPlanList.value[i].planUUID,
+            planTitle: longTermPlanList.value[i].planTitle,
+            planStatus: longTermPlanList.value[i].planStatus
+        })
+    }
 }
 
 onMounted(async () => {
@@ -94,6 +112,37 @@ const planLevelColor = (
     return ''
 }
 
+const labelFilterList = ref<Array<{
+    text: string,
+    value: string
+}>>([])
+
+const labelFilter = () => {
+    for (let i = 0; i < labelList.value.length; i++) {
+        labelFilterList.value[i] = {
+            text: labelList.value[i].labelName,
+            value: labelList.value[i].labelValue
+        }
+    }
+}
+
+
+const sortStatus = (a, b) => {
+    return a.planStatus > b.planStatus ? -1 : 1
+}
+
+const filterLabel = (value: string, row: any) => {
+    return row.planLabels.mainLabel === value
+}
+
+const filterStatus = (value: number, row: any) => {
+    return row.planStatus === value
+}
+
+const LongTermPlanDone = (row: any) => {
+    row.planStatus = 1
+    longTermPlanDoneService(row.planUUID)
+}
 </script>
 
 <template>
@@ -101,7 +150,61 @@ const planLevelColor = (
         <template #extra>
             <el-button type="primary" plain @click="changeDisplay">修改我的计划</el-button>
         </template>
-        <div>这是一段文字</div>
+        <div class="displayBox">
+            <el-container>
+                <el-aside class="aside">
+                    <el-table :data="longTermPlanListLess" border max-height="500">
+                        <el-table-column fixed label="ID" type="index" :index="indexMethod"
+                                         width="50"></el-table-column>
+                        <el-table-column prop="planTitle" label="计划名" show-overflow-tooltip
+                                         width="100"></el-table-column>
+                        <el-table-column
+                            label="计划状态"
+                            :filters="
+                            [
+                            {text:'已完成',value:1},
+                            {text:'未完成',value:0},
+                            ]"
+                            :filter-method="filterStatus"
+                            sortable
+                            :sort-method="sortStatus"
+                            width="100">
+                            <template #default="props">
+                                <span v-if="props.row.planStatus === 1" class="text-blue-300">已完成</span>
+                                <span v-if="props.row.planStatus === 0" class="text-red-300">未完成</span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="200">
+                            <template #default="props">
+                                <el-popconfirm
+                                    v-if="props.row.planStatus === 0"
+                                    confirm-button-text="Yes"
+                                    cancel-button-text="No"
+                                    :icon="QuestionFilled"
+                                    icon-color="#626AEF"
+                                    title="确认完成?"
+                                    @confirm="LongTermPlanDone(props.row)"
+                                >
+                                    <template #reference>
+                                        <el-link :icon="QuestionFilled">| 我已完成</el-link>
+                                    </template>
+                                </el-popconfirm>
+
+                                <div v-if="props.row.planStatus === 1">
+                                    <el-icon>
+                                        <Check />
+                                    </el-icon>
+                                </div>
+                            </template>
+                        </el-table-column>
+                        <template #empty>
+                            <el-empty description="看起来你还没有自己的计划,快来制定一份你的计划吧!" />
+                        </template>
+                    </el-table>
+                </el-aside>
+                <el-main>这是统计图</el-main>
+            </el-container>
+        </div>
     </display-panel>
 
     <page-container title="修改长期计划" v-if="!isDisplay">
@@ -126,7 +229,11 @@ const planLevelColor = (
             <el-table-column fixed label="ID" type="index" :index="indexMethod" width="50"></el-table-column>
             <el-table-column prop="planTitle" label="计划名" width="200"></el-table-column>
             <el-table-column label="计划标签" width="350">
-                <el-table-column label="主标签" width="150">
+                <el-table-column
+                    label="主标签"
+                    :filters="labelFilterList"
+                    :filter-method="filterLabel"
+                    width="150">
                     <template #default="props">
                         {{ parseToName(props.row.planLabels.mainLabel) }}
                     </template>
@@ -145,7 +252,17 @@ const planLevelColor = (
                     <div v-html="props.row.planDescription"></div>
                 </template>
             </el-table-column>
-            <el-table-column label="计划状态" width="200">
+            <el-table-column
+                label="计划状态"
+                :filters="
+                [
+                {text:'已完成',value:1},
+                {text:'未完成',value:0},
+                ]"
+                :filter-method="filterStatus"
+                sortable
+                :sort-method="sortStatus"
+                width="200">
                 <template #default="props">
                     <span v-if="props.row.planStatus === 1" class="text-blue-300">已完成</span>
                     <span v-if="props.row.planStatus === 0" class="text-red-300">未完成</span>
@@ -201,6 +318,16 @@ const planLevelColor = (
 <style lang="scss" scoped>
 .display-panel {
     height: 73vh;
+
+    .displayBody {
+        .displayBox {
+            height: 100%;
+
+            .aside {
+                width: 45vh;
+            }
+        }
+    }
 }
 
 .page-container {

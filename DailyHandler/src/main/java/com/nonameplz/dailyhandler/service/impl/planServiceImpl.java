@@ -5,14 +5,14 @@ import com.nonameplz.dailyhandler.mapper.planMapper;
 import com.nonameplz.dailyhandler.pojo.dailyPlan;
 import com.nonameplz.dailyhandler.pojo.labels;
 import com.nonameplz.dailyhandler.pojo.longTermPlan;
+import com.nonameplz.dailyhandler.pojo.savingPlan;
 import com.nonameplz.dailyhandler.service.planService;
 import com.nonameplz.dailyhandler.utils.UUIDGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class planServiceImpl implements planService {
@@ -65,6 +65,16 @@ public class planServiceImpl implements planService {
     }
 
     @Override
+    public void dailyPlanDone(String planUUID) {
+        planMapper.dailyPlanDone(planUUID);
+    }
+
+    @Override
+    public void dailyPlanReset() {
+        planMapper.dailyPlanReset();
+    }
+
+    @Override
     public List<longTermPlan> getLongTermPlanPlanList(String userUUID) {
         List<longTermPlan> longTermPlanList = planMapper.getUserLongTermPlan(userUUID);
         List<longTermPlan.parseLabelJSON> longTermPlanLabelsList = planMapper.getUserLongTermPlanLabels(userUUID);
@@ -88,7 +98,7 @@ public class planServiceImpl implements planService {
         longTermPlan.setModifyTime(LocalDateTime.now());
 
         planMapper.addLongTermPlan(longTermPlan);
-        planMapper.updateLongTermPlanLabels(longTermPlan.getPlanUUID(),JSON.toJSONString(longTermPlan.getPlanLabels()));
+        planMapper.updateLongTermPlanLabels(longTermPlan.getPlanUUID(), JSON.toJSONString(longTermPlan.getPlanLabels()));
     }
 
     @Override
@@ -102,5 +112,64 @@ public class planServiceImpl implements planService {
     @Override
     public void deleteLongTermPlan(String planUUID) {
         planMapper.deleteLongTermPlan(planUUID);
+    }
+
+    @Override
+    public void longTermPlanDone(String planUUID) {
+        planMapper.longTermPlanDone(planUUID);
+    }
+
+    @Override
+    public Map<String, List<Object>> getSavingPlan(String userUUID) {
+        List<savingPlan> savingPlan = planMapper.getSavingPlan(userUUID);
+        List<savingPlan.savingProcess> savingProcess = planMapper.getSavingProcess(userUUID);
+
+        Map<String, List<Object>> savingPlanMap = new HashMap<>();
+        savingPlanMap.put("savingPlan", Collections.singletonList(savingPlan));
+        savingPlanMap.put("savingProcess", Collections.singletonList(savingProcess));
+        return savingPlanMap;
+    }
+
+    @Override
+    public void addSavingPlan(savingPlan savingPlan) {
+        savingPlan.setTargetUUID(UUIDGenerator.generateUUID());
+        savingPlan.setIsDone((short) 0);
+        savingPlan.setCreateTime(LocalDateTime.now());
+        savingPlan.setModifyTime(LocalDateTime.now());
+
+        planMapper.addSavingPlan(savingPlan);
+    }
+
+    @Override
+    public void addSavingProcess(savingPlan.savingProcess savingProcess) {
+        savingProcess.setProcessUUID(UUIDGenerator.generateUUID());
+        savingProcess.setCreateTime(LocalDateTime.now());
+        savingProcess.setModifyTime(LocalDateTime.now());
+
+        planMapper.addSavingProcess(savingProcess);
+    }
+
+    @Override
+    public void modifySavingPlan(savingPlan savingPlan) {
+        savingPlan.setModifyTime(LocalDateTime.now());
+
+        planMapper.modifySavingPlan(savingPlan);
+    }
+
+    @Override
+    public void modifySavingProcess(savingPlan.savingProcess savingProcess) {
+        savingProcess.setModifyTime(LocalDateTime.now());
+
+        planMapper.modifySavingProcess(savingProcess);
+    }
+
+    @Override
+    public void deleteSavingPlan(String targetUUID) {
+        planMapper.deleteSavingPlan(targetUUID);
+    }
+
+    @Override
+    public void deleteSavingProcess(String processUUID) {
+        planMapper.deleteSavingProcess(processUUID);
     }
 }
