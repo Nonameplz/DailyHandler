@@ -28,4 +28,22 @@ declare module '@element-plus/icons-vue' {
     export class Calendar {}
 
     export class Collection {}
+
+    export class Edit {
+    }
+
+    export class ArrowLeftBold {
+    }
+
+    export class Delete {
+    }
+
+    export class DocumentAdd {
+    }
+
+    export class EditPen {
+    }
+
+    export class InfoFilled {
+    }
 }

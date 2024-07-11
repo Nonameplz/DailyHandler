@@ -1,40 +1,54 @@
 <script setup lang="ts">
 defineProps({
-    title: {
-        required: true,
-        type: String
-    }
+  title: {
+    required: true,
+    type: String
+  }
 })
 </script>
 
 <template>
-    <el-card class="page-container" body-style="flex:auto">
-        <template #header>
-            <div class="header">
-                <span>{{ title }}</span>
-                <div class="extra">
-                    <slot name="extra"></slot>
-                </div>
-            </div>
-        </template>
-        <div>
-            <slot></slot>
+  <el-card class="page-container" body-style="flex:auto">
+    <template #header>
+      <div class="header">
+        <div class="title">
+          <div class="beforeTitle">
+            <slot name="beforeTitle"></slot>
+          </div>
+          <span>{{ title }}</span>
         </div>
-    </el-card>
+
+        <div class="extra">
+          <slot name="extra"></slot>
+        </div>
+      </div>
+    </template>
+    <div>
+      <slot></slot>
+    </div>
+  </el-card>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .page-container {
-    min-height: 100%;
-    box-sizing: border-box;
+  min-height: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .header {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     justify-content: space-between;
 
-    .header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+    .title {
+      display: flex;
+      .beforeTitle {
+        margin-right: 8px;
+      }
     }
+
+  }
 }
 </style>

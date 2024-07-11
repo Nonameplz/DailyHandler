@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.nonameplz.dailyhandler.mapper.userMapper">
+    <update id="updateUserInfo">
+        update userinfo
+        <set>
+            <if test="userAvatar != null">
+                userAvatar = #{userAvatar},
+            </if>
+            userNickName = #{userNickName},
+            email = #{email},
+            phoneNumber = #{phoneNumber},
+            modifyTime = now()
+        </set>
+        where userUUID=#{userUUID}
+    </update>
+</mapper>

@@ -13,7 +13,7 @@ const router = createRouter({
             component: () =>
                 import(
                     '@/views/DailyHandlerPages/layoutManage/layoutManage.vue'
-                ),
+                    ),
             redirect: '/DailyHandler/mainMenu',
             children: [
                 {
@@ -21,35 +21,35 @@ const router = createRouter({
                     component: () =>
                         import(
                             '@/views/DailyHandlerPages/mainMenu/mainMenu.vue'
-                        )
+                            )
                 },
                 {
                     path: '/DailyHandler/myPlan',
                     component: () =>
                         import(
-                            '@/views/DailyHandlerPages/dailyPlanPage/myPlanPage/myPlanPage.vue'
-                        ),
+                            '@/views/DailyHandlerPages/planPage/myPlanPage/myPlanPage.vue'
+                            ),
                     children: [
                         {
                             path: '/DailyHandler/myPlan/dailyPlan',
                             component: () =>
                                 import(
-                                    '@/views/DailyHandlerPages/dailyPlanPage/myPlanPage/dailyPlanPage.vue'
-                                )
+                                    '@/views/DailyHandlerPages/planPage/myPlanPage/dailyPlanPage/dailyPlanPage.vue'
+                                    )
                         },
                         {
                             path: '/DailyHandler/myPlan/longTermPlan',
                             component: () =>
                                 import(
-                                    '@/views/DailyHandlerPages/dailyPlanPage/myPlanPage/longTermPlanPage.vue'
-                                )
+                                    '@/views/DailyHandlerPages/planPage/myPlanPage/longTermPlanPage/longTermPlanPage.vue'
+                                    )
                         },
                         {
                             path: '/DailyHandler/myPlan/planStats',
                             component: () =>
                                 import(
-                                    '@/views/DailyHandlerPages/dailyPlanPage/myPlanPage/planStatsPage.vue'
-                                )
+                                    '@/views/DailyHandlerPages/planPage/myPlanPage/planStatsPage.vue'
+                                    )
                         }
                     ]
                 },
@@ -57,15 +57,27 @@ const router = createRouter({
                     path: '/DailyHandler/planReview',
                     component: () =>
                         import(
-                            '@/views/DailyHandlerPages/dailyPlanPage/planReviewPage/planReviewPage.vue'
-                        )
+                            '@/views/DailyHandlerPages/planPage/planReviewPage/planReviewPage.vue'
+                            )
                 },
                 {
                     path: '/DailyHandler/savingPlan',
                     component: () =>
                         import(
-                            '@/views/DailyHandlerPages/dailyPlanPage/savingsPlan/savingPlanPage.vue'
-                        )
+                            '@/views/DailyHandlerPages/planPage/savingsPlan/savingPlanPage.vue'
+                            )
+                },
+                {
+                    path: '/DailyHandler/userInfo',
+                    component: () => import('@/views/DailyHandlerPages/user/userInfoPage.vue')
+                },
+                {
+                    path: '/DailyHandler/rePassword',
+                    component: () => import('@/views/DailyHandlerPages/user/rePasswordPage.vue')
+                },
+                {
+                    path: '/DailyHandler/personalConfig',
+                    component: () => import('@/views/DailyHandlerPages/user/personalConfigPage.vue')
                 }
             ]
         },

@@ -8,6 +8,7 @@ import App from './App.vue'
 import router from './router'
 import pinia from '@/stores'
 import { VueReCaptcha } from 'vue-recaptcha-v3'
+import VueCropper from 'vue-cropper'
 
 const app = createApp(App)
 
@@ -15,11 +16,12 @@ app.use(pinia)
 app.use(router)
 app.use(ElementPlus)
 app.use(VueReCaptcha, {
-    siteKey: 'reCAPTCHA v3 key',
+    siteKey: '6LdzFgAqAAAAAGmLrDP9MZybGKyxHJOqj464o9Qq',
     loaderOptions: {
         useRecaptchaNet: true,
         autoHideBadge: false
     }
 })
+app.use(VueCropper)
 
 app.mount('#app')

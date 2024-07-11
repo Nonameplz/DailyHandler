@@ -11,4 +11,9 @@ public interface userService {
 
     //根据用户名密码获取用户
     user getUser(String userName,String password);
+
+    //更新用户信息
+    void updateUserInfo(user user);
+
+    void updateUserPassword(String userUUID, String password);
 }

@@ -14,6 +14,7 @@ public class userServiceImpl implements userService {
     private static final Logger log = LoggerFactory.getLogger(userServiceImpl.class);
     @Autowired
     private userMapper usermapper;
+
     @Override
     public String findUserByUserName(String username) {
         return usermapper.findUserUUIDByUserName(username);
@@ -32,11 +33,24 @@ public class userServiceImpl implements userService {
         if (user == null) {
             return null;
         }
-        if (!Md5Util.checkPassword(password,user.getPassword())) {
+        if (!Md5Util.checkPassword(password, user.getPassword())) {
             return null;
         }
 
         return user;
     }
+
+    @Override
+    public void updateUserInfo(user user) {
+        usermapper.updateUserInfo(user);
+    }
+
+    @Override
+    public void updateUserPassword(String userUUID, String password) {
+
+        usermapper.updateUserPassword(userUUID, Md5Util.getMD5String(password));
+
+    }
+
 
 }

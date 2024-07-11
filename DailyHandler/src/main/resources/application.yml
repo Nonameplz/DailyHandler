@@ -29,7 +29,7 @@ aliyun:
     bucketName: image-container
 
 recaptcha:
-  server-key: "reCAPTCHA v3 secret key"
+  server-key: "6LdzFgAqAAAAAPuT4BLfBtNn_yGbjbOEIliaLyP8"
   siteVerify: "https://www.recaptcha.net/recaptcha/api/siteverify"
 
 ---

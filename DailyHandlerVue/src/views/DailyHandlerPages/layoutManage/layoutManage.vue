@@ -31,8 +31,8 @@ const onCloseSlide = () => {
     }, 500)
 }
 
-const handleCommand = (key: string) => {
-    if (key === 'logout') {
+const handleCommand = (command: string | number | object) => {
+    if (command === 'logout') {
         ElMessageBox.confirm('确认退出?', 'Warning', {
             confirmButtonText: 'Yes',
             cancelButtonText: 'No',
@@ -47,7 +47,7 @@ const handleCommand = (key: string) => {
             })
         })
     } else {
-        router.push(`/user/${key}`)
+        router.push(`/DailyHandler/${command}`)
     }
 }
 </script>
@@ -57,10 +57,10 @@ const handleCommand = (key: string) => {
             <el-header class="header">
                 <div class="logo">DH</div>
                 <div class="userMenu">
-                    <el-dropdown @click="handleCommand">
+                    <el-dropdown @command="handleCommand">
                         <span class="el-dropdown-link">
                             <span class="mr-4"
-                                >欢迎回来 :
+                            >欢迎回来 :
                                 {{
                                     useUser.user.userNickName ||
                                     useUser.user.userName
@@ -80,10 +80,10 @@ const handleCommand = (key: string) => {
                                 <el-dropdown-item command="userInfo">
                                     &bigstar; 个人信息
                                 </el-dropdown-item>
-                                <el-dropdown-item command="resetPassword"
-                                    >&bigstar; 重置密码
+                                <el-dropdown-item command="rePassword"
+                                >&bigstar; 重置密码
                                 </el-dropdown-item>
-                                <el-dropdown-item command="systemConfig">
+                                <el-dropdown-item command="personalConfig">
                                     &bigstar; 系统设置
                                 </el-dropdown-item>
                                 <el-dropdown-item
@@ -171,7 +171,7 @@ const handleCommand = (key: string) => {
                         <router-view></router-view>
                     </el-main>
                     <el-footer class="footer"
-                        >Created by &boxV;
+                    >Created by &boxV;
                         <p class="opacity-15">Nonameplz</p>
                         &boxV;
                     </el-footer>

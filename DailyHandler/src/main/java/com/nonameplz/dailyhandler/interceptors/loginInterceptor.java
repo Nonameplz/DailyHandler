@@ -26,12 +26,8 @@ public class loginInterceptor implements HandlerInterceptor {
     public boolean preHandle(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull Object handler) throws IOException {
         String token = request.getHeader("authorization");
 
-//        log.info("preHandle token: {}", token);
-
         try {
             String redisToken = stringRedisTemplate.opsForValue().get(token);
-
-//            log.info("token: {}", redisToken);
 
             if (redisToken == null) {
                 throw new RuntimeException();

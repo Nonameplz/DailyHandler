@@ -21,7 +21,9 @@ public class webConfig implements WebMvcConfigurer {
         registry.addInterceptor(authenticationInterceptor)
                 .addPathPatterns(
                         "/authentication/login",
-                        "/authentication/register");
+                        "/authentication/register",
+                        "/user/rePassword"
+                );
 
         registry.addInterceptor(loginInterceptor)
                 .addPathPatterns("/**")
